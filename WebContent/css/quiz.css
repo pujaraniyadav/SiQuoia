@@ -1,0 +1,108 @@
+@CHARSET "ISO-8859-1";
+
+.Top
+{
+	background-image: url(../images/qquiz-top-bground1.jpg);
+	position: relative;
+	top: 2%;
+	left: 0%;
+	width: 100%;
+	height: 60px;
+}
+
+.Main
+{
+	background-image: url(../images/quiz-bground.jpg);
+	overflow: auto;
+}
+
+
+.Error {
+	color: #ff0000;
+	padding-top: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    background: lightyellow;
+    border: 2px #1779b6 solid;
+	border-radius: 5px;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+}
+
+.QAndA {
+	padding-top: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    background: lightyellow;
+    border: 2px #1779b6 solid;
+	border-radius: 5px;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+}
+
+.FormHeading {
+	padding-left: 10px;
+}
+
+.Form {
+	position: relative;
+	top: 40px;
+	left: 50%;
+  	width: 40%;
+  	font-size: 15px;
+  	color: #000000;
+  	background-image: url(../images/quiz-form-bgroundd.jpg);
+  	background-size: 100% 100%;
+  	background-color: #ffffff;
+  	border: 2px #dbaa2c solid;
+  	border-top: 10px #dbaa2c solid;
+  	margin-left: -20%;
+  	margin-right: 20%;
+  	border-radius: 12px;
+  	-webkit-border-radius: 12px;
+  	-moz-border-radius: 12px;
+}
+
+.FieldLabel {
+    padding-top: 0px;
+    padding-left: 10px;
+    padding-bottom: 0px;
+}
+
+.FieldDiv {
+    padding-top: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+.FieldInput {
+    padding-top: 4px;
+    padding-left: 4px;
+    padding-bottom: 4px;
+    background: rgb(242,246,248);
+    opacity: .8;
+    border: 2px #1779b6 solid;
+	border-radius: 5px;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+}
+
+.SubmitButtons {
+	padding-top: 2px;
+	padding-bottom: 30px;
+	width: 95%;
+}
+
+.SaveButton {
+	font-size: 10x;
+	color: #fff;
+	background-color: #1779b6;
+	padding: 5px;
+	border: 2px #1779b6 solid;
+	border-radius: 5px;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+}
