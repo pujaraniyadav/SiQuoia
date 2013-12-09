@@ -21,7 +21,11 @@
       <div class="Form">
       		<h1 class="FormHeading">Create Quiz</h1>
 			<form:form name="CreateQuizForm" method="post" action="create-quiz.q" commandName="quiz">
-				<div class="FieldDiv"><form:errors cssClass="Error" element="div" path="*" /></div>
+				<c:if test="${not empty error}">
+					<div class="FieldDiv">
+						<div class="Error">${error}</div>
+					</div>
+				</c:if>
 
 				<div class="FieldLabel">QuizName</div>
 				<div class="FieldDiv"><form:input class="FieldInput" path="name" style="width:90%;"/></div>
@@ -32,6 +36,7 @@
 				<br/>
 				<div class="FieldDiv">
 					<a class="SaveButton" href="javascript:" onclick="document.CreateQuizForm.submit()">Next</a>
+					<a class="SaveButton" href="home.q">Cancel</a>
 				</div>
 			</form:form>
 		</div>

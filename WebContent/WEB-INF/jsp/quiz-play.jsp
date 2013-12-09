@@ -13,7 +13,7 @@
     <meta http-equiv="content-type" content="text/html; charset=
     UTF-8"/>
     <link href="css/quiz.css" media="screen" rel="stylesheet" type="text/css"/>
-    <title>${journal.title}</title>
+    <title>SiQuoia :: Play</title>
 
 </head>
 

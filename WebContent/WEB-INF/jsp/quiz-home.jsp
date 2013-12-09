@@ -30,13 +30,19 @@
 
 				<div class="FieldLabel">Category</div>
 				<div class="FieldDiv">
-					<form:select class="FieldInput" path="category0" style="width:40%;" onchange="this.form.action='submit-play-cat.q?c=0';this.form.submit()">
+					<form:select class="FieldInput" path="category0" style="width:60%;" onchange="this.form.action='submit-play-cat.q?c=0';this.form.submit()">
 						<form:options items="${categories0}" />
 					</form:select>
-					<form:select class="FieldInput" path="category1" style="width:40%;" onchange="this.form.action='submit-play-cat.q?c=1';this.form.submit()">
+				</div>
+				<div class="FieldLabel">Sub-Category</div>
+				<div class="FieldDiv">
+					<form:select class="FieldInput" path="category1" style="width:60%;" onchange="this.form.action='submit-play-cat.q?c=1';this.form.submit()">
 						<form:options items="${categories1}" />
 					</form:select>
-					<form:select class="FieldInput" path="category2" style="width:40%;" onchange="this.form.action='submit-play-cat.q?c=2';this.form.submit()">
+				</div>
+				<div class="FieldLabel">Topic</div>
+				<div class="FieldDiv">
+					<form:select class="FieldInput" path="category2" style="width:60%;" onchange="this.form.action='submit-play-cat.q?c=2';this.form.submit()">
 						<form:options items="${categories2}" />
 					</form:select>
 				</div>
@@ -63,6 +69,10 @@
 	
 	</c:if>
 	
+	<c:if test="${session.username == 'admin'}">
+		<h1 class="FormHeading">Admin Menu</h1>
+	</c:if>
+	
 	<!--  Manage menus -->
 		
 			<form:form name="PlayForm" action="submit-play.q">									
@@ -76,7 +86,7 @@
 					</c:if>
 					<c:if test="${session.username == 'admin'}">
 						<a href="start-create-quiz.q">Create Quiz</a>|
-						<a href="start-delete-quiz.q">Delete Quiz</a>|
+						<a href="delete-quiz.q">Delete Quiz</a>|
 					</c:if>
 					<a href="logout.q">Logout</a>
 				</div>

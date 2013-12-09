@@ -24,9 +24,9 @@
 	 		<div class="QAndA">
 	 			<table>
 	 				<tr>
-	 					<td width="50%"><u><b>Q.no</b></u></td>
-	 					<td width="50%"><u><b>Pass/Fail</b></u></td>
-	 					<td width="50%"><u><b>Points</b></u></td>
+	 					<td width="30%"><u><b>Q.no</b></u></td>
+	 					<td width="30%"><u><b>Pass/Fail</b></u></td>
+	 					<td width="30%"><u><b>Points</b></u></td>
 	 				</tr>
 	 				<c:forEach var="result" items="${results}">
   						<tr>

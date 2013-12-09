@@ -12,7 +12,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link href="css/quiz.css" media="screen" rel="stylesheet" type="text/css"/>
-    <title>${journal.title}</title>
+    <title>SiQuoia :: Login</title>
 
 </head>
 <body class="Main">
@@ -28,7 +28,6 @@
 								
 				<div class="FieldLabel">Password:</div>
 				<div class="FieldDiv"><form:password class="FieldInput" path="password"/></div>
-				
 				<br/>
 				<div class="FieldDiv">
 					<a class="SaveButton" href="javascript:" onclick="document.LoginForm.submit()">Login</a>
@@ -42,5 +41,8 @@
 		</div>
 		
 </body>
+
+<jsp:include page="html/footer.html" />
+
 </html>
 

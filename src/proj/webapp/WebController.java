@@ -161,6 +161,20 @@ public class WebController {
     	user.setPoints(0);
     	QueryHelper.Save(user);
     	
+    	//
+    	// Assign all SampleQuiz games
+    	//
+    	List<Quiz> quizes = QueryHelper.GetSampleQuizes();
+    	
+    	for (Quiz q : quizes) {
+    		UserQuiz uq = new UserQuiz();
+    		
+    		uq.setQuizid(q.getId());
+    		uq.setUserid(user.getId());
+    		
+    		QueryHelper.Save(uq);
+    	}
+    	
     	return Notify("Success !", "User was successfully signed up.", "Goto Login", "login.q");
     }
     
@@ -244,8 +258,6 @@ public class WebController {
     	Map<String,String> games = new LinkedHashMap<String, String>();
     	List<String> modes = new LinkedList<String>();
     	
-    	Boolean firstEntry = true;
-    	
     	for (UserQuiz uq : uqs) {
     		Quiz q = QueryHelper.GetQuiz(uq.getQuizid());
     		categories.add(q.getCategory());
@@ -313,9 +325,7 @@ public class WebController {
     	//  	
     	Quiz quiz = QueryHelper.GetQuiz(gameid);
 
-    	if (session.getGame() == null) {
-    		session.setGame(new Game(quiz));
-    	}
+    	session.setGame(new Game(quiz));
     	
     	session.getGame().setMode(mode);
     	
@@ -579,7 +589,7 @@ public class WebController {
     			r.setPoints("" + points + " [HARD]");
     		}
     		
-    		results.put(i + "", r);
+    		results.put((i + 1) + "", r);
     		
     		if (game.getResults().get(i)) {
     			score += game.getQuestions().get(i).getPoints();
@@ -589,23 +599,35 @@ public class WebController {
     	map.addAttribute("results", results);
     	map.addAttribute("score", score);
     	
-    	//
-    	// Update quiz score
-    	//
-    	QuizScore quizScore = new QuizScore();
-    	
-    	quizScore.setUserid(user.getId());
-    	quizScore.setQuizid(game.getQuiz().getId());
-    	quizScore.setScore(score);
-    	
-    	QueryHelper.Save(quizScore);
-    	
-    	//
-    	// Update user with points
-    	//
-    	user.setPoints(user.getPoints() + score);
-    	
-    	QueryHelper.Save(user);
+    	if (!game.getMode().equals("Learner")) {
+	    	//
+	    	// Update quiz score
+	    	//
+	    	QuizScore quizScore = new QuizScore();
+	    	
+	    	quizScore.setUserid(user.getId());
+	    	quizScore.setQuizid(game.getQuiz().getId());
+	    	quizScore.setScore(score);
+	    	
+	    	QueryHelper.Save(quizScore);
+	    	
+	    	//
+	    	// Update user with points
+	    	//
+	    	if (!game.getQuiz().getName().startsWith("SampleQuiz")) {
+	    		//
+	    		// Update user score
+	    		//
+	    		user.setPoints(user.getPoints() + score);
+	    		QueryHelper.Save(user);
+	    		
+	    		//
+	    		// Remove quiz from user
+	    		//
+	    		UserQuiz uq = QueryHelper.LookupBy(game.getQuiz().getId(), user.getId());
+	    		QueryHelper.Delete(uq);
+	    	}
+    	}
     	
     	session.setGame(null);
     	
@@ -668,6 +690,8 @@ public class WebController {
     @RequestMapping("create-quiz.q")
     public ModelAndView SubmitCreateQuiz(CreateQuizConfig quiz, BindingResult result, ModelMap map)
     {
+    	map.addAttribute("quiz", quiz);
+    	
     	Session session = (Session) map.get("session");
     	
     	if (session == null || session.getUsername() == null) {
@@ -675,15 +699,18 @@ public class WebController {
     	}
 
     	if (result.hasErrors()) {
+    		map.addAttribute("error", "Error validating data");
     		return new ModelAndView("quiz-createquiz", map);
     	}
     
     	if (quiz.getCategory() == null || quiz.getCategory().isEmpty() || quiz.getName() == null || quiz.getName().isEmpty()) {
-    		result.reject("*", "Please fill all fields");
-    	}
-    	    	
-    	if (result.hasErrors()) {
+    		map.addAttribute("error", "Please fill all fields");
     		return new ModelAndView("quiz-createquiz", map);
+    	}
+ 
+    	if (quiz.getCategory().split("\\.").length != 3) {
+       		map.addAttribute("error", "Please supply category of the for a.b.c");
+    		return new ModelAndView("quiz-createquiz", map);   		
     	}
     	
     	Quiz q = new Quiz();
@@ -705,6 +732,8 @@ public class WebController {
     @RequestMapping("create-question.q")
     public ModelAndView SubmitCreateQuestion(CreateQuestionConfig config, BindingResult result, ModelMap map)
     {
+    	map.addAttribute("question", config);
+    	
     	Session session = (Session) map.get("session");
     	
     	if (session == null || session.getUsername() == null) {
@@ -712,10 +741,21 @@ public class WebController {
     	}
 
     	if (result.hasErrors()) {
-    		result.reject("There are errors in the form");
+    		map.addAttribute("error", "There are errors in the form");
     		return new ModelAndView("quiz-createquestion", map);
     	}
-    	    	
+    	
+    	if (config.getQuestion() == null || config.getQuestion().isEmpty()
+    		|| config.getAnswers() == null || config.getAnswers().isEmpty()) {
+    		map.addAttribute("error", "Please fill in all fields");
+    		return new ModelAndView("quiz-createquestion", map);
+    	}
+    	
+    	if (config.getAnswers().split(",").length != 4) {
+    		map.addAttribute("error", "Please type in 4 answers sepearated by commas");
+    		return new ModelAndView("quiz-createquestion", map);
+    	}
+    	
     	Question q = new Question();
     	
     	q.setText(config.getQuestion());
@@ -765,7 +805,7 @@ public class WebController {
     	Map<String, String> ret = new HashMap();
     	
     	for (Quiz q : quizes) {
-    		if (QueryHelper.LookupByUserid(q.getId(), user.getId()) == null) {
+    		if (QueryHelper.LookupBy(q.getId(), user.getId()) == null) {
     			ret.put(q.getId(), q.getCategory() + " : " + q.getName());
     		} 
     	}

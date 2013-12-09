@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -206,6 +207,32 @@ public class QueryHelper
         }
     }
 
+    public static List<Quiz> GetSampleQuizes()
+    {
+        EntityManager em = null;
+
+        List<Quiz> ret = new LinkedList<Quiz>();
+        
+        try {
+            em = factory.createEntityManager();
+            Query query = em.createQuery("select q from proj.model.Quiz");
+            List<Quiz> quizes = query.getResultList();
+            
+            for (Quiz q : quizes) {
+            	if (q.getName().startsWith("SampleQuiz")) {
+            		ret.add(q);
+            	}
+            }
+        }
+        finally {
+            if (em!=null) {
+                em.close();
+            }
+        }
+        
+        return ret;
+    }
+    
     //
     // UserQuiz
     //
@@ -225,8 +252,23 @@ public class QueryHelper
         
         return uq.getId();    	
     }
+
+    public static void Delete(UserQuiz uq)
+    {
+        EntityManager em = null;
+
+        try {
+            em = factory.createEntityManager();
+            em.remove(uq);
+        }
+        finally {
+            if (em!=null) {
+                em.close();
+            }
+        }    	
+    }
     
-    public static UserQuiz LookupByUserid(final String quizid, final String userid)
+    public static UserQuiz LookupBy(final String quizid, final String userid)
     {
         EntityManager em = null;
 

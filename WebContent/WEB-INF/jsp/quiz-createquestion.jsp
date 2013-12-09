@@ -21,7 +21,11 @@
       <div class="Form">
       		<h1 class="FormHeading">Create Question</h1>
 			<form:form name="CreateQuestionForm" method="post" action="create-question.q" commandName="question">
-				<div class="FieldDiv"><form:errors cssClass="Error" element="div" path="*" /></div>
+				<c:if test="${not empty error}">
+					<div class="FieldDiv">
+						<div class="Error">${error}</div>
+					</div>
+				</c:if>
 
 				<div class="FieldLabel">Question ${number}</div>
 				<div class="FieldDiv"><form:input class="FieldInput" path="question" style="width:90%;"/></div>
@@ -51,7 +55,6 @@
 				<br/>
 				<div class="FieldDiv">
 					<a class="SaveButton" href="javascript:" onclick="document.CreateQuestionForm.submit()">Next</a>
-					<a class="SaveButton" href="home.q">Cancel</a>
 				</div>
 				<br/>
 			</form:form>
