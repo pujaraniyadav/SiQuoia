@@ -67,7 +67,7 @@
   </filter-mapping>
   <error-page>
     <exception-type>java.lang.Exception</exception-type>
-    <location>/login.q</location>
+    <location>/error.q</location>
   </error-page>
   <servlet>
     <description></description>

@@ -12,21 +12,29 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link href="css/quiz.css" media="screen" rel="stylesheet" type="text/css"/>
-    <title>${journal.title}</title>
+    <title>SiQuoia :: Create Quiz</title>
 
 </head>
 <body class="Main">
 	<jsp:include page="html/header.html" />
 
-     <div class="Form">
-      	<h1 class="FormHeading">Error !</h1>      		
-		<div class="FieldLabel">
-			You did an operation that causes an un-handled exception. Please notify developed.
-		</div>
+      <div class="Form">
+      		<h1 class="FormHeading">Create Quiz</h1>
+			<form:form name="CreateQuizForm" method="post" action="create-quiz.q" commandName="quiz">
+				<div class="FieldDiv"><form:errors cssClass="Error" element="div" path="*" /></div>
+
+				<div class="FieldLabel">QuizName</div>
+				<div class="FieldDiv"><form:input class="FieldInput" path="name" style="width:90%;"/></div>
+								
+				<div class="FieldLabel">Category:</div>
+				<div class="FieldDiv"><form:input class="FieldInput" path="category" style="width:90%;"/></div>
 				
-		<br/>
-		<div class="FieldDiv"><a class="SaveButton" href="home.q">Go Home</a></div>
-	</div>
+				<br/>
+				<div class="FieldDiv">
+					<a class="SaveButton" href="javascript:" onclick="document.CreateQuizForm.submit()">Next</a>
+				</div>
+			</form:form>
+		</div>
 		
 </body>
 </html>

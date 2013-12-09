@@ -35,7 +35,14 @@
 				<div class="QAndA">
 					<div>${question}</div>
 					<br/>
-					<form:radiobuttons path="answer" items="${answers}" element="div" />
+					<c:choose>
+						<c:when test="${not firsttry}">
+							<form:radiobuttons path="answer" items="${answers}" element="div" disabled="true" />
+						</c:when>
+						<c:otherwise>
+							<form:radiobuttons path="answer" items="${answers}" element="div" />
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 
@@ -44,12 +51,32 @@
 				<a class="SaveButton" href="javascript:" onclick="document.GameForm.action='quiz-play.q?op=next';document.GameForm.submit()">Next</a>
 				<a class="SaveButton" href="javascript:" onclick="document.GameForm.action='quiz-play.q?op=skip';document.GameForm.submit()">Skip</a>
 				<a class="SaveButton" href="javascript:" onclick="document.GameForm.action='quiz-play.q?op=cancel';document.GameForm.submit()">Cancel</a>			
+				<c:if test="${mode !=  'Learner'}">
+					<label id="timeleft" style="float:right;" />
+				</c:if>
 			</div>
 			<br/>
 		</form:form>
 		
 	</div>
-		
+
+<c:if test="${mode != 'Learner'}">
+	<script>
+	
+	var timeleft = ${timeleft};
+	var myVar=setInterval(function(){myTimer()} , 1000);
+	
+	myTimer();
+	
+	function myTimer()
+	{
+		if (timeleft > 0) timeleft = timeleft - 1;
+		var str = Math.floor(timeleft / 60) + "m " + (timeleft % 60) + "s";
+		document.getElementById("timeleft").innerHTML = str;
+	}
+	
+	</script>
+</c:if>
 </body>
 </html>
 

@@ -16,55 +16,50 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.sun.istack.internal.NotNull;
 
 @Entity
-public class Question implements Serializable {
+public class QuizScore implements Serializable {
 	
 	private static final long serialVersionUID = 1629672935573849314L;
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private String id;
-	private String text;
-	private String answers;
-	private int answer;
-	private int points;
+
+	private String userid;
+	private String quizid;
+	private int score;
+	
+	//
+	// get/set
+	//
+	public String getUserid() {
+		return userid;
+	}
 	
 	public String getId() {
 		return id;
 	}
-
+	
 	public void setId(String id) {
 		this.id = id;
 	}
 	
-	public String getText() {
-		return text;
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
-
-	public void setText(String text) {
-		this.text = text;
+	
+	public String getQuizid() {
+		return quizid;
 	}
-
-	public String getAnswers() {
-		return answers;
+	
+	public void setQuizid(String quizid) {
+		this.quizid = quizid;
 	}
-
-	public void setAnswers(String answers) {
-		this.answers = answers;
+	
+	public int getScore() {
+		return score;
 	}
-
-	public int getAnswer() {
-		return answer;
-	}
-
-	public void setAnswer(int answer) {
-		this.answer = answer;
-	}
-
-	public int getPoints() {
-		return points;
-	}
-
-	public void setPoints(int points) {
-		this.points = points;
+	
+	public void setScore(int score) {
+		this.score = score;
 	}
 }

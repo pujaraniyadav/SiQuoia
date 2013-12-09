@@ -32,15 +32,14 @@ public class User implements Serializable, UserDetails {
 	@NotNull
 	private String password;
 
-	@Column(nullable=false)
 	private String fullname;
 	
-	@Column(nullable=false)
 	private String email;
 
-	@Column(nullable=false)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dob;
+	
+	private int points;
 	
 	public String getEmail() {
 		return email;
@@ -106,5 +105,13 @@ public class User implements Serializable, UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
 	}
 }

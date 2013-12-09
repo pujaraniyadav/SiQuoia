@@ -12,7 +12,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link href="css/quiz.css" media="screen" rel="stylesheet" type="text/css"/>
-    <title>${journal.title}</title>
+    <title>SiQuoia :: Home</title>
 
 </head>
 <body class="Main">
@@ -20,6 +20,8 @@
 	
 <div id="main" class="Form">
 
+	<c:if test="${session.username != 'admin'}">
+	
 	<!--  Play menus -->
 
       		<h1 class="FormHeading">Player Menu</h1>
@@ -28,8 +30,14 @@
 
 				<div class="FieldLabel">Category</div>
 				<div class="FieldDiv">
-					<form:select class="FieldInput" path="category" style="width:80%;" onchange="this.form.submit()">
-						<form:options items="${categories}" />
+					<form:select class="FieldInput" path="category0" style="width:40%;" onchange="this.form.action='submit-play-cat.q?c=0';this.form.submit()">
+						<form:options items="${categories0}" />
+					</form:select>
+					<form:select class="FieldInput" path="category1" style="width:40%;" onchange="this.form.action='submit-play-cat.q?c=1';this.form.submit()">
+						<form:options items="${categories1}" />
+					</form:select>
+					<form:select class="FieldInput" path="category2" style="width:40%;" onchange="this.form.action='submit-play-cat.q?c=2';this.form.submit()">
+						<form:options items="${categories2}" />
 					</form:select>
 				</div>
 
@@ -51,27 +59,26 @@
 				<div class="FieldDiv">
 					<input type="submit" class="SaveButton" value="Play !" />
 				</div>
-				<br/>
 			</form:form>
-		
+	
+	</c:if>
+	
 	<!--  Manage menus -->
 		
-			<hr></hr>
-			<h1 class="FormHeading">Config Menu</h1>
-			<form:form name="PlayForm" action="submit-play.q">
-				<div class="FieldDiv"><form:errors cssClass="Error" element="div" path="*" /></div>
-												
+			<form:form name="PlayForm" action="submit-play.q">									
 				<br/>
 				<div class="FieldDiv">
-					<a class="SaveButton" href="javascript:" onclick="this.form.submit()">Buy Game</a>
-				</div>
-				<br/>
-				<div class="FieldDiv">
-					<a class="SaveButton" href="javascript:" onclick="document.LoginForm.submit()">Submit Questions</a>
-				</div>
-				<br/>
-				<div class="FieldDiv">
-					<a class="SaveButton" href="javascript:" onclick="document.LoginForm.submit()">Logout</a>
+					<c:if test="${session.username != 'admin'}">
+						<a href="bigscorecard.q">ScoreCard</a>  |
+						<a href="buy.q">Buy Game</a>  |
+						<a href="question.q">Submit Question</a>  |
+						<a href="help.q">Help</a>  |
+					</c:if>
+					<c:if test="${session.username == 'admin'}">
+						<a href="start-create-quiz.q">Create Quiz</a>|
+						<a href="start-delete-quiz.q">Delete Quiz</a>|
+					</c:if>
+					<a href="logout.q">Logout</a>
 				</div>
 			</form:form>
 			

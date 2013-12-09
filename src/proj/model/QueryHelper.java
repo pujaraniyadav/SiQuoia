@@ -44,6 +44,38 @@ public class QueryHelper
     private static EntityManagerFactoryImpl factory = new EntityManagerFactoryImpl("Quiz"
             							+ StageUtils.getResourceSuffixForCurrentStage(), properties);
 
+    //
+    // Categories
+    //
+    public static void GetCategories(List<String> categories, List<String> c0, List<String> c1, List<String> c2)
+    {
+    	String c0val = null;
+    	String c1val = null;
+    	
+    	for (String s : categories) {
+    		String[] tokens = s.split("\\.");
+    		
+    		System.out.println(s + " .. " + tokens.length);
+    		
+    		if (tokens.length != 3) continue;
+    	
+    		if (c0val == null) {
+    			c0val = tokens[0];
+    		}
+    		
+    		if (!c0.contains(tokens[0])) c0.add(tokens[0]);
+    		
+    		if (c1val == null) {
+    			c1val = tokens[1];
+    		}
+    		
+    		if (tokens[0].equals(c0val))
+    			if (!c1.contains(tokens[1])) c1.add(tokens[1]);
+    		if (tokens[1].equals(c1val))
+    			if (!c2.contains(tokens[2])) c2.add(tokens[2]);
+    	}
+    }
+
     public static User GetUser(String username)
     {
         EntityManager em = null;
@@ -83,7 +115,7 @@ public class QueryHelper
         }
     }
 
-    public static void AddUser(User user)
+    public static void Save(User user)
     {
         EntityManager em = null;
 
@@ -194,6 +226,26 @@ public class QueryHelper
         return uq.getId();    	
     }
     
+    public static UserQuiz LookupByUserid(final String quizid, final String userid)
+    {
+        EntityManager em = null;
+
+        try {
+            em = factory.createEntityManager();
+            Query query = em.createQuery("select q from proj.model.UserQuiz uq where uq.userid=:userid and uq.quizid=:quizid");
+            query.setParameter("userid", userid);
+            query.setParameter("quizid", quizid);
+            
+            return (UserQuiz) query.getSingleResult();   
+        } catch (NoResultException e) {
+        	return null;
+        } finally {
+            if (em!=null) {
+                em.close();
+            }
+        }
+    }
+
     //
     // QuizQuestion
     //
@@ -246,6 +298,110 @@ public class QueryHelper
                 em.close();
             }
         }
-    	
+    }
+    
+    //
+    // QuizScore
+    //
+    public static String Save(QuizScore qs)
+    {
+        EntityManager em = null;
+
+        try {
+            em = factory.createEntityManager();
+            em.persist(qs);
+        }
+        finally {
+            if (em!=null) {
+                em.close();
+            }
+        }
+        
+        return qs.getId();    	
+    }
+    
+    public static List<QuizScore> GetQuizScores(String userid)
+    {
+        EntityManager em = null;
+
+        try {
+            em = factory.createEntityManager();
+            Query query = em.createQuery("select qs from proj.model.QuizScore qs where qs.userid=:userid");
+            query.setParameter("userid", userid);
+            return query.getResultList();
+        }
+        finally {
+            if (em!=null) {
+                em.close();
+            }
+        }
+    }
+
+    public static QuizScore GetMaxQuizScore(String quizid)
+    {
+        EntityManager em = null;
+
+        try {
+            em = factory.createEntityManager();
+            Query query = em.createQuery("select qs from proj.model.QuizScore qs where qs.quizid=:quizid");
+            query.setParameter("quizid", quizid);
+            
+            List<QuizScore> qss = query.getResultList();
+            
+            assert ! qss.isEmpty();
+            
+            QuizScore ret = qss.get(0);
+            
+            for (QuizScore qs : qss) {
+            	if (ret.getScore() < qs.getScore()) {
+            		ret = qs;
+            	}
+            }
+            
+            return ret;
+            
+        }
+        finally {
+            if (em!=null) {
+                em.close();
+            }
+        }
+    }
+    
+    public static List<Quiz> GetAllQuizes()
+    {
+        EntityManager em = null;
+
+        try {
+            em = factory.createEntityManager();
+            Query query = em.createQuery("select q from proj.model.Quiz q");
+            
+            return query.getResultList();   
+        }
+        finally {
+            if (em!=null) {
+                em.close();
+            }
+        }
+    }
+    
+    //
+    // SubmitQuestion
+    //
+    public static String Save(SubmitQuestion q)
+    {
+        EntityManager em = null;
+
+        try {
+            em = factory.createEntityManager();
+            em.persist(q);
+        }
+        finally {
+            if (em!=null) {
+                em.close();
+            }
+        }
+        
+        return q.getId();    	
     }
 }

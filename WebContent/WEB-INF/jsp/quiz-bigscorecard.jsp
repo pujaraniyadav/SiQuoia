@@ -12,22 +12,43 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link href="css/quiz.css" media="screen" rel="stylesheet" type="text/css"/>
-    <title>${journal.title}</title>
+    <title>SiQuoia :: BigScoreCard</title>
 
 </head>
 <body class="Main">
 	<jsp:include page="html/header.html" />
-
+	
      <div class="Form">
-      	<h1 class="FormHeading">Error !</h1>      		
-		<div class="FieldLabel">
-			You did an operation that causes an un-handled exception. Please notify developed.
-		</div>
-				
-		<br/>
-		<div class="FieldDiv"><a class="SaveButton" href="home.q">Go Home</a></div>
-	</div>
-		
+      	<h1 class="FormHeading">Big Score Card</h1>
+      	<div class="FieldDiv">
+	 		<div class="QAndA">
+	 			<table>
+	 				<tr>
+	 					<td width="50%"><u><b>Game</b></u></td>
+	 					<td width="50%"><u><b>Score</b></u></td>
+	 					<td width="50%"><u><b>MaxScore</b></u></td>
+	 				</tr>
+	 				<c:forEach var="game" items="${games}">
+  						<tr>
+  							<td>${game.gameName}</td>
+  							<td>${game.gameScore}</td>
+  							<td>${game.gameMaxScore}</td>
+  						</tr>
+					</c:forEach>
+	 			</table>
+	 		</div>
+
+			<br/>
+			<div class="QAndA">
+				<h3>Total Score is ${total}</h3>
+				<h3>Total purchase credits ${totalCredit}</h3>
+			</div>
+
+	 	 	<br/>
+	 		<a class="SaveButton" href="home.q">Go Home</a>
+	 	</div>
+	 </div>
+	 		
 </body>
 </html>
 
